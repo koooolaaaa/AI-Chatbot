@@ -1,3 +1,10 @@
-console.log(
-  "This is a starter kit for this amazing project. With 💓 By Indian Coders"
-);
+import express from 'express'
+
+const app = express(); 
+
+
+app.listen(5050, () => console.log("Server Open"));
+
+
+
+

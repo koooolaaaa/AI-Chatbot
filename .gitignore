@@ -9,3 +9,5 @@ backend/.env
 
 # Build output
 dist/
+
+.DS_Store
