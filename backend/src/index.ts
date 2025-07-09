@@ -2,16 +2,10 @@ import express from 'express'
 
 const app = express(); 
 
-// GET -
-// PUT -
-// POST 
-// DELETE
+// middlewares
+app.use(express.json());
 
-
-app.post("/hello", (req, res, next) => {
-  return res.send("Hello");
-});
-
+//connections and listeners
 app.listen(5050, () => console.log("Server Open"));
 
 
