@@ -24,6 +24,26 @@ export const userSignup = async (req: Request, res: Response, next: NextFunction
         const hashedPassword = await hash(password, 10);
         const user = new User({ name, email, password: hashedPassword });
         await user.save();
+
+        res.clearCookie(COOKIE_NAME,{
+            path: "/", 
+            domain: "localhost", 
+            httpOnly: true, 
+            signed: true,
+        });
+
+        const token = createToken(user._id.toString(), user.email, "7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        res.cookie(COOKIE_NAME,
+            token, {
+                path: "/", 
+                domain: "localhost", 
+                expires, 
+                httpOnly: true, 
+                signed: true,
+            });
+            
         return res.status(201).json({ message: "OK", id: user._id.toString() });
     } catch (error) {
         console.log(error); 
@@ -43,12 +63,17 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
             return res.status(403).send("Incorrect Password");
         }       
 
-        res.clearCookie(COOKIE_NAME);
+        res.clearCookie(COOKIE_NAME,{
+            path: "/", 
+            domain: "localhost", 
+            httpOnly: true, 
+            signed: true,
+        });
 
         const token = createToken(user._id.toString(), user.email, "7d");
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
-        res.cookie("auth_token",
+        res.cookie(COOKIE_NAME,
             token, {
                 path: "/", 
                 domain: "localhost", 
