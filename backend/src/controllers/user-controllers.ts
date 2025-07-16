@@ -42,7 +42,19 @@ export const userLogin = async (req: Request, res: Response, next: NextFunction)
             return res.status(403).send("Incorrect Password");
         }       
 
+        res.clearCookie("auth_token");
+
         const token = createToken(user._id.toString(), user.email, "7d");
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 7);
+        res.cookie("auth_token",
+            token, {
+                path: "/", 
+                domain: "localhost", 
+                expires, 
+                httpOnly: true, 
+                signed: true,
+            });
 
         return res.status(201).json({ message: "OK", id: user._id.toString() });
     } catch (error) {
