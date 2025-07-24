@@ -40,10 +40,10 @@ export const userSignup = async (req: Request, res: Response, next: NextFunction
                 path: "/", 
                 domain: "localhost", 
                 expires, 
-                httpOnly: true, 
+                httpOnly: true,
                 signed: true,
             });
-            
+
         return res.status(201).json({ message: "OK", id: user._id.toString() });
     } catch (error) {
         console.log(error); 
